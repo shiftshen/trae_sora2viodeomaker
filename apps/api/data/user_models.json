@@ -1,0 +1,53 @@
+{
+  "1": [
+    {
+      "id": "deepseek-chat",
+      "name": "DeepSeek Chat",
+      "provider": "DeepSeek",
+      "apiEndpoint": "https://api.deepseek.com/v1",
+      "apiKey": "",
+      "customPrompt": "",
+      "enabled": true
+    },
+    {
+      "id": "gemini-3-pro-preview",
+      "name": "Gemini 3 Pro",
+      "provider": "Google",
+      "apiEndpoint": "https://generativelanguage.googleapis.com/v1beta",
+      "apiKey": "",
+      "customPrompt": "",
+      "enabled": false
+    },
+    {
+      "id": "gpt-4o-mini",
+      "name": "GPT-4o Mini",
+      "provider": "OpenAI",
+      "apiEndpoint": "https://api.openai.com/v1",
+      "apiKey": "",
+      "customPrompt": "",
+      "enabled": false
+    }
+  ],
+  "1763927785213": [
+    {
+      "id": "model-1764053490123",
+      "name": "Deepseek",
+      "provider": "Deepseek",
+      "apiKey": "sk-ff1cd4516e834f59882ccac6d20a68b3",
+      "apiEndpoint": "https://api.deepseek.com/v1",
+      "customPrompt": "",
+      "enabled": true
+    }
+  ],
+  "1763956868234": [
+    {
+      "id": "model-1764007477635",
+      "name": "deepseet chat",
+      "provider": "deepseek",
+      "apiKey": "sk-ff1cd4516e834f59882ccac6d20a68b3",
+      "apiEndpoint": "https://api.deepseek.com/v1",
+      "customPrompt": "",
+      "enabled": true
+    }
+  ]
+}

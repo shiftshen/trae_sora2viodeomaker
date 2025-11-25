@@ -1,0 +1,13 @@
+.DS_Store
+.vscode/
+.idea/
+.trae/
+
+
+.env
+.env.*
+!.env.example
+
+apps/**/.env
+apps/**/.env.*
+!apps/**/.env.example
