@@ -1,8 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import { createVideo, getVideoStatus, createCharacter, listCharacters, getCharacterStatus } from "./sora2.js";
-import { startMockJob, getMockStatus } from "./mock.js";
 import { recordVideoCreation, updateVideoStatus } from "./videoRepo.js";
 import { createAgent, listAgents, updateAgent, deleteAgent } from "./agentRepo.js";
 import { createPromptTemplate, listPromptTemplates } from "./promptRepo.js";
@@ -15,12 +16,9 @@ import { getUserSettings, saveUserSettings } from "./userSettingsRepo.js";
 import { getUserModels, saveUserModels, listUserModelVersions, listUserModelChanges, restoreUserModelsByVersion } from "./userModelsRepo.js";
 import { getUserCharacters, saveUserCharacters } from "./userCharactersRepo.js";
 
-dotenv.config();
-
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '25mb' }));
-const allowMock = false;
 
 app.post("/api/videos", async (req, res) => {
   try {
@@ -48,11 +46,6 @@ app.post("/api/videos", async (req, res) => {
       return res.json(result);
     } catch (err) {
       console.error("createVideo failed", err);
-      if (allowMock) {
-        const mock = startMockJob(prompt);
-        await recordVideoCreation({ external_id: String(mock.id), prompt, model, user_id: userId });
-        return res.json(mock);
-      }
       throw err;
     }
   } catch (err) {
@@ -69,11 +62,6 @@ app.get("/api/videos/:id", async (req, res) => {
       await updateVideoStatus({ external_id: String(id), status: status?.status, progress: status?.progress, url: status?.url, quality: status?.quality, size: status?.size, model: status?.model, seconds: status?.seconds });
       return res.json(status);
     } catch (err) {
-      if (allowMock) {
-        const s = getMockStatus(id);
-        await updateVideoStatus({ external_id: String(id), status: s?.status, progress: s?.progress, url: s?.url, quality: s?.quality, size: s?.size, model: s?.model, seconds: s?.seconds });
-        return res.json(s);
-      }
       throw err;
     }
   } catch (err) {
@@ -538,32 +526,6 @@ app.post("/api/user/settings", async (req, res) => {
     return res.json({ success: true });
   } catch (err) {
     return res.status(500).json({ error: "save_user_settings_failed", detail: String(err?.message || err) });
-  }
-});
-
-// 用户角色列表（按 API Key 映射用户）
-app.get("/api/user/characters", async (req, res) => {
-  try {
-    const clientKey = req.get("x-client-api-key") || (req.header("authorization") || "").replace(/^Bearer\s+/i, "");
-    if (!clientKey) return res.status(400).json({ error: "missing_api_key" });
-    const userId = await getOrCreateUserByApiKey(clientKey);
-    const rows = await getUserCharacters(userId);
-    return res.json({ success: true, data: rows });
-  } catch (err) {
-    return res.status(500).json({ error: "get_user_characters_failed", detail: String(err?.message || err) });
-  }
-});
-
-app.post("/api/user/characters", async (req, res) => {
-  try {
-    const clientKey = req.get("x-client-api-key") || (req.header("authorization") || "").replace(/^Bearer\s+/i, "");
-    if (!clientKey) return res.status(400).json({ error: "missing_api_key" });
-    const userId = await getOrCreateUserByApiKey(clientKey);
-    const characters = req.body?.characters || [];
-    await saveUserCharacters(userId, characters);
-    return res.json({ success: true });
-  } catch (err) {
-    return res.status(500).json({ error: "save_user_characters_failed", detail: String(err?.message || err) });
   }
 });
 
