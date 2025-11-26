@@ -49,5 +49,34 @@
       "customPrompt": "",
       "enabled": true
     }
+  ],
+  "1764008276809": [
+    {
+      "id": "deepseek-chat",
+      "name": "DeepSeek Chat",
+      "provider": "DeepSeek",
+      "apiEndpoint": "https://api.deepseek.com/v1",
+      "apiKey": "",
+      "customPrompt": "",
+      "enabled": true
+    },
+    {
+      "id": "gemini-3-pro-preview",
+      "name": "Gemini 3 Pro",
+      "provider": "Google",
+      "apiEndpoint": "https://generativelanguage.googleapis.com/v1beta",
+      "apiKey": "",
+      "customPrompt": "",
+      "enabled": false
+    },
+    {
+      "id": "gpt-4o-mini",
+      "name": "GPT-4o Mini",
+      "provider": "OpenAI",
+      "apiEndpoint": "https://api.openai.com/v1",
+      "apiKey": "",
+      "customPrompt": "",
+      "enabled": false
+    }
   ]
 }

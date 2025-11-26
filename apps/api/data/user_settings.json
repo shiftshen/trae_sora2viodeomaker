@@ -47,14 +47,25 @@
     "default_ai_model": "",
     "client_api_key": "",
     "api_server_url": "",
+    "api_routes": [],
+    "language": "",
+    "theme": "",
+    "video_line_base": "",
+    "preferred_standard_model": "sora-2-landscape-yijia",
+    "preferred_hd_model": ""
+  },
+  "1764008276809": {
+    "default_ai_model": "deepseek-chat",
+    "client_api_key": "sk-local-test",
+    "api_server_url": "http://localhost:5050",
     "api_routes": [
       "https://ai.yijiarj.cn",
       "https://dnssora.78978999.xyz"
     ],
     "language": "zh",
     "theme": "dark",
-    "video_line_base": "",
-    "preferred_standard_model": "",
+    "video_line_base": "http://43.224.35.24:3000",
+    "preferred_standard_model": "sora-2-landscape-yijia",
     "preferred_hd_model": ""
   }
 }
