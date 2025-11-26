@@ -3312,6 +3312,34 @@ export default function App() {
             </div>
 
             {characterDialogMode === "generate" && !editingCharacter && (
+              <div className="space-y-2">
+                <Label className={theme.textSecondary}>选择视频 (从已完成视频中提取角色)</Label>
+                <Select
+                  value={newCharacter.videoId || ""}
+                  onValueChange={(v) => setNewCharacter({ ...newCharacter, videoId: v })}
+                >
+                  <SelectTrigger className={theme.input}>
+                    <SelectValue placeholder="选择一个已完成的视频" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {completedVideos.length === 0 ? (
+                      <SelectItem value="" disabled>暂无已完成视频</SelectItem>
+                    ) : (
+                      completedVideos.map((video) => (
+                        <SelectItem key={video.id} value={video.externalId || video.id}>
+                          {video.prompt?.slice(0, 30) || video.id}{video.prompt && video.prompt.length > 30 ? "..." : ""}
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+                {completedVideos.length === 0 && (
+                  <p className={`text-xs ${theme.textMuted}`}>提示：请先生成一个视频，完成后才能从中提取角色</p>
+                )}
+              </div>
+            )}
+
+            {characterDialogMode === "generate" && !editingCharacter && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className={theme.textSecondary}>起始秒</Label>

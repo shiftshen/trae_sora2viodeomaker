@@ -1,0 +1,72 @@
+services:
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: sora2-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Happy@2025
+      MYSQL_DATABASE: videogeneration
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./apps/api/src/db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pHappy@2025"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sora2-network
+
+  # 后端 API 服务
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: sora2-api
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Happy@2025
+      - MYSQL_DB=videogeneration
+      - PORT=5050
+    ports:
+      - "5050:5050"
+    volumes:
+      # 挂载源代码实现热更新
+      - ./apps/api/src:/app/src:ro
+      - ./apps/api/data:/app/data
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - sora2-network
+
+  # 前端服务
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: sora2-web
+    restart: always
+    ports:
+      - "3010:3010"
+    volumes:
+      # 挂载源代码实现热更新
+      - ./apps/web/src:/app/src:ro
+      - ./apps/web/public:/app/public:ro
+    depends_on:
+      - api
+    networks:
+      - sora2-network
+
+networks:
+  sora2-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

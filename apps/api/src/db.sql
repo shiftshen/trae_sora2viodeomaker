@@ -93,6 +93,9 @@ CREATE TABLE IF NOT EXISTS user_settings (
   api_routes JSON,
   language VARCHAR(16),
   theme VARCHAR(32),
+  video_line_base VARCHAR(255),
+  preferred_standard_model VARCHAR(128),
+  preferred_hd_model VARCHAR(128),
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -117,14 +120,6 @@ CREATE TABLE IF NOT EXISTS user_model_changes (
   user_id BIGINT NOT NULL,
   operation VARCHAR(32),
   diff_json JSON,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS user_characters (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  user_id BIGINT NOT NULL UNIQUE,
-  characters_json JSON NOT NULL,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
